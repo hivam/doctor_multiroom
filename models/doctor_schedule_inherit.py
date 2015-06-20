@@ -27,5 +27,5 @@ class doctor_schedule_inherit(osv.osv):
 	_inherit = 'doctor.schedule'
 
 	_columns = {
-		'consultorio_id': fields.many2one('doctor.room', 'Consultorio'),
+		'consultorio_id': fields.many2one('doctor.room', 'Consultorio', required=True),
 	}
