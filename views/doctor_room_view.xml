@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="doctor_room_form_view" model="ir.ui.view">
+      <field name="name">doctor.room.form.view</field>
+      <field name="model">doctor.room</field>
+      <field name="arch" type="xml">
+        <form string="Doctor Room" version="7.0">
+          <sheet>
+            <legend class="texto_legend">Crear Consultorio</legend><br></br>
+            <group>
+              <field name="codigo" style="width: 50%%" />
+              <field name="name" style="width: 50%%"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="doctor_room_tree_view" model="ir.ui.view">
+      <field name="name">doctor.room.tree.view</field>
+      <field name="model">doctor.room</field>
+      <field name="arch" type="xml">
+        <tree string="Doctor Room">
+          <field name="codigo" />
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_doctor_room" model="ir.actions.act_window">
+      <field name="name">Consultorios</field>
+      <field name="res_model">doctor.room</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_doctor_room" id="item_doctor_room" name="Consultorios" parent="doctor.menu_doctor_process" sequence="41"/>
+  </data>
+</openerp>
