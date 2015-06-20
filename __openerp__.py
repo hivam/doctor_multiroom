@@ -35,7 +35,9 @@
     'depends' : ['doctor', 'l10n_co_doctor'],
     'data' : [
                 'views/doctor_room_view.xml',
+                'views/doctor_appointment_inherit_view.xml',
                 'views/doctor_schedule_inherit_view.xml',
+
 
     ],
     'installable': True,

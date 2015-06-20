@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+
+    <record model="ir.ui.view" id="view_doctor_appointment">
+      <field name="name">doctor.appointment.inherit</field>
+      <field name="model">doctor.appointment</field>
+      <field name="inherit_id" ref="doctor.view_doctor_appointment_form"/>
+      <field name="priority" eval="2"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='schedule_id']" position="after">
+          <field name="id" invisible="1"/>
+          <field name="consultorio_id" attrs=" { 'readonly': [('id', '=', False )] }"/>
+        </xpath>
+
+      </field>
+    </record>
+
+  </data>
+</openerp>

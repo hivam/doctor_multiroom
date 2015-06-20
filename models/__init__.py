@@ -20,3 +20,4 @@
 ##############################################################################
 import doctor_room
 import doctor_schedule_inherit
+import doctor_appointment_inherit
