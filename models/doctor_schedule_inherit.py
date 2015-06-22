@@ -29,3 +29,26 @@ class doctor_schedule_inherit(osv.osv):
 	_columns = {
 		'consultorio_id': fields.many2one('doctor.room', 'Consultorio', required=True),
 	}
+
+	def _check_schedule(self, cr, uid, ids):
+		return True
+
+	def _check_consultorio_disponible(self, cr, uid, ids):
+		for record in self.browse(cr, uid, ids):
+			schedule_ids = self.search(cr, uid, [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin), '&', ('id', '<>', record.id), ('consultorio_id', '=', record.consultorio_id.id)])
+			if schedule_ids:
+				return False
+		return True
+
+	def _check_medico_disponible(self, cr, uid, ids):
+		for record in self.browse(cr, uid, ids):
+			doctors_ids = self.search(cr, uid, [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin), '&', ('id', '<>', record.id), ('professional_id', '=', record.professional_id.id)])
+			if doctors_ids:
+				return False
+		return True
+
+	_constraints = [
+		(_check_schedule, 'Error ! The Office Doctor is busy.', ['date_begin', 'date_end']),
+		(_check_consultorio_disponible, 'El consultorio seleccionado no está disponible en la fecha/hora especificada.', ['Consultorio']),
+		(_check_medico_disponible, 'El doctor seleccionado no está disponible en la fecha/hora especificada.', ['Doctor']),
+	]
