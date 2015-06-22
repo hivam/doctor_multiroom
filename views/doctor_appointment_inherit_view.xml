@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-
-
     <record model="ir.ui.view" id="view_doctor_appointment">
       <field name="name">doctor.appointment.inherit</field>
       <field name="model">doctor.appointment</field>
@@ -15,7 +13,6 @@
         </xpath>
 
       </field>
-    </record>
-
+  </record>
   </data>
 </openerp>
