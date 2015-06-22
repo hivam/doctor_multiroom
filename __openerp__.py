@@ -20,27 +20,24 @@
 ##############################################################################
 
 {
-    'name' : 'doctor_multiroom',
-    'version' : '1.0',
-    'summary': 'Create multiple doctor rooms',
-    'description': """
-
-=================================================================
-
-""",
-    'category' : 'medical',
-    'author' : 'Proyecto Evoluzion',
-    'website': '',
-    'license': 'AGPL-3',
-    'depends' : ['doctor', 'l10n_co_doctor'],
-    'data' : [
-                'views/doctor_room_view.xml',
-                'views/doctor_appointment_inherit_view.xml',
-                'views/doctor_schedule_inherit_view.xml',
+    'name'        : 'Doctor_multiroom',
+    'version'     : '1.0',
+    'summary'     : 'Create multiple doctor rooms',
+    'description' : 'Doctor_multiroom agrega la posibilidad de gestionar múltiples consultorios al módulo doctor.',
+    'category'    : 'medical',
+    'author'      : 'Proyecto Evoluzion',
+    'website'     : 'http://www.proyectoevoluzion.com/',
+    'license'     : 'AGPL-3',
+    'depends'     : ['doctor', 'l10n_co_doctor'],
+    'data'        : [
+                    'views/doctor_room_view.xml',
+                    'views/doctor_appointment_inherit_view.xml',
+                    'views/doctor_schedule_inherit_view.xml',
 
 
     ],
-    'installable': True,
+    'installable' : True,
+    'qweb'        : ['static/src/xml/custom_access_login.xml'],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
