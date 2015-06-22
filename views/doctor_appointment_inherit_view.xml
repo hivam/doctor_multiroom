@@ -11,8 +11,7 @@
           <field name="id" invisible="1"/>
           <field name="consultorio_id" attrs="{'invisible': [('id','=',False)]}"/>
         </xpath>
-
       </field>
-  </record>
+    </record>
   </data>
 </openerp>
