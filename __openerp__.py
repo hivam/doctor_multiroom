@@ -37,7 +37,6 @@
 
     ],
     'installable' : True,
-    'qweb'        : ['static/src/xml/custom_access_login.xml'],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
