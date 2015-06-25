@@ -53,3 +53,23 @@ class doctor_appointment(osv.osv):
 	def create(self, cr, uid, vals, context=None):
 		vals.update({'consultorio_id_stored': vals['consultorio_id'] })
 		return super(doctor_appointment, self).create(cr, uid, vals, context)
+
+	#se sobrescribe y se retorna true simplemente para evitar la validacion
+	def _check_appointment(self, cr, uid, ids, context=None):
+		return True
+
+	def _chech_cita(self, cr, uid, ids, context=None):
+		for record in self.browse(cr, uid, ids, context=context):
+			appointment_ids = self.search(cr, uid,
+										  [('time_begin', '<', record.time_end), ('time_end', '>', record.time_begin),
+										   ('aditional', '=', record.aditional), ('state', '=', record.state),
+										   ('id', '<>', record.id), ('consultorio_id', '=', record.consultorio_id.id)])
+			if appointment_ids:
+				return False
+		return True
+
+
+	_constraints = [
+		(_check_appointment, 'Error ! Already exists an appointment at that time.', ['time_begin', 'time_end']),
+		(_chech_cita, '¡Atención! Ya hay una cita programada para la hora seleccionada.', ['Desde', 'Hasta']),
+	]
