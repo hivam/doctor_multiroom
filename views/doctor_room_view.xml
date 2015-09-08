@@ -36,6 +36,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_doctor_room" id="item_doctor_room" name="Consultorios" parent="doctor.menu_doctor_config" sequence="41"/>
+    <menuitem action="action_doctor_room" id="item_doctor_room" name="Consultorios" parent="doctor.menu_doctor_config" sequence="41" 
+    groups="doctor.group_doctor_configuration"/>
   </data>
 </openerp>

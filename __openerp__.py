@@ -30,6 +30,7 @@
     'license'     : 'AGPL-3',
     'depends'     : ['doctor', 'l10n_co_doctor'],
     'data'        : [
+                    'security/ir.model.access.csv',
                     'views/doctor_room_view.xml',
                     'views/doctor_appointment_inherit_view.xml',
                     'views/doctor_schedule_inherit_view.xml',
