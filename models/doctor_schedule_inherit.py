@@ -21,6 +21,7 @@
 import logging
 _logger = logging.getLogger(__name__)
 from openerp.osv import fields, osv
+from datetime import date, datetime, timedelta
 
 class doctor_schedule_inherit(osv.osv):
 	_name = 'doctor.schedule'
@@ -46,6 +47,29 @@ class doctor_schedule_inherit(osv.osv):
 			if doctors_ids:
 				return False
 		return True
+
+	def onchange_hora_inicio(self, cr, uid, ids, consultorio_id, context=None):
+
+		res={'value':{}}
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+
+		fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+		fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
+
+		if consultorio_id:
+			
+			agenda_ids = self.search(cr,uid,[('date_begin','>=', fecha_usuario_ini), ('date_end', '<=', fecha_usuario_fin), ('consultorio_id', '=', consultorio_id)],context=None)
+			ultima_agenda_id = agenda_ids and max(agenda_ids)
+			
+			if ultima_agenda_id:
+				hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+				res['value']['date_begin'] = str(hora_inicio_agenda)
+
+			if not ultima_agenda_id or hora_inicio_agenda < str(fecha_hora_actual):
+				res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
+			
+		return res
 
 	_constraints = [
 		(_check_schedule, 'Error ! The Office Doctor is busy.', ['date_begin', 'date_end']),
