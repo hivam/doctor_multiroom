@@ -9,7 +9,7 @@
       <field name="priority" eval="2"/>
       <field name="arch" type="xml">
         <xpath expr="//field[@name='professional_id']" position="before">
-          <field name="consultorio_id" on_change="onchange_hora_inicio(consultorio_id)"/>
+          <field name="consultorio_id" on_change="onchange_hora_inicio(consultorio_id, date_begin)"/>
         </xpath>
 
       </field>
