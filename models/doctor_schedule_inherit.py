@@ -60,16 +60,17 @@ class doctor_schedule_inherit(osv.osv):
 			if consultorio_id:
 				f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini,context=context)
 				f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin,context=context)
-				agenda_ids = self.search(cr,uid,[('date_begin','>=', f_fin), ('date_begin', '<=', f_ini), ('consultorio_id', '=', consultorio_id)],context=None)
+				agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin), ('consultorio_id', '=', consultorio_id)],context=None)
 				ultima_agenda_id = agenda_ids and max(agenda_ids)
-				
 				if ultima_agenda_id:
 					hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
 					res['value']['date_begin'] = str(hora_inicio_agenda)
+					res['value']['fecha_inicio'] = str(hora_inicio_agenda)
 
 				if not ultima_agenda_id or hora_inicio_agenda < str(fecha_hora_actual):
 					res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
-			
+					res['value']['fecha_inicio'] = str(fecha_hora_actual + timedelta(minutes=2))
+
 		return res
 
 	_constraints = [
