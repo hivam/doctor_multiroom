@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_doctor_schedule_multiroom,doctor.doctor.room,model_doctor_room,doctor.group_doctor_assistant,1,1,1,0
+access_doctor_schedule_multiroom_doctor,doctor.doctor.room,model_doctor_room,doctor.group_doctor_physician,1,1,1,0
