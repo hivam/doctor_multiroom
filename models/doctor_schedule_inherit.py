@@ -65,8 +65,17 @@ class doctor_schedule_inherit(osv.osv):
 
 				if ultima_agenda_id:
 					hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-					res['value']['date_begin'] = str(hora_inicio_agenda)
-					res['value']['fecha_inicio'] = str(hora_inicio_agenda)
+					diff = int(hora_inicio_agenda[17:])
+					if diff > 0:
+						diff = 60 - diff
+					hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+					if hora_inicio_agenda > fecha_hora_actual:
+
+						res['value']['date_begin'] = str(hora_inicio_agenda)
+						res['value']['fecha_inicio'] = str(hora_inicio_agenda)
+					else:
+						res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
+						res['value']['fecha_inicio'] = str(fecha_hora_actual + timedelta(minutes=2))
 
 				elif not ultima_agenda_id or fecha_inicio_agenda < fecha_hora_actual:
 					res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
