@@ -51,7 +51,8 @@ class doctor_appointment(osv.osv):
 		return {'value': values}
 
 	def create(self, cr, uid, vals, context=None):
-		vals.update({'consultorio_id_stored': vals['consultorio_id'] })
+		if vals['consultorio_id_stored']:
+			vals.update({'consultorio_id_stored': vals['consultorio_id'] })
 		return super(doctor_appointment, self).create(cr, uid, vals, context)
 
 	#se sobrescribe y se retorna true simplemente para evitar la validacion
