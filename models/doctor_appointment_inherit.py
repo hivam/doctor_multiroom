@@ -51,7 +51,7 @@ class doctor_appointment(osv.osv):
 		return {'value': values}
 
 	def create(self, cr, uid, vals, context=None):
-		if vals['consultorio_id_stored']:
+		if 'consultorio_id_stored' in vals:
 			vals.update({'consultorio_id_stored': vals['consultorio_id'] })
 		return super(doctor_appointment, self).create(cr, uid, vals, context)
 
