@@ -51,8 +51,12 @@ class doctor_appointment(osv.osv):
 		return {'value': values}
 
 	def create(self, cr, uid, vals, context=None):
-		if 'consultorio_id_stored' in vals:
-			vals.update({'consultorio_id_stored': vals['consultorio_id'] })
+		modelo_buscar = self.pool.get('doctor.schedule')
+
+		consultorio_id = modelo_buscar.browse(cr, uid, vals['schedule_id'], context=context).consultorio_id.id
+		_logger.info(consultorio_id)
+		if consultorio_id:
+			vals.update({'consultorio_id': consultorio_id })
 		return super(doctor_appointment, self).create(cr, uid, vals, context)
 
 	#se sobrescribe y se retorna true simplemente para evitar la validacion
