@@ -50,36 +50,38 @@ class doctor_schedule_inherit(osv.osv):
 
 	def onchange_hora_inicio(self, cr, uid, ids, consultorio_id, date_begin, context=None):
 		res={'value':{}}
-		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
-		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
-		fecha_inicio_agenda = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
-		fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
-		fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
 
-		if fecha_inicio_agenda < fecha_hora_actual:
-			if consultorio_id:
-				f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini,context=context)
-				f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin,context=context)
-				agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin), ('consultorio_id', '=', consultorio_id)],context=None)
-				ultima_agenda_id = agenda_ids and max(agenda_ids)
+		if date_begin:
+			fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+			fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+			fecha_inicio_agenda = datetime.strptime(date_begin, "%Y-%m-%d %H:%M:%S")
+			fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
+			fecha_usuario_fin = fecha_hora_actual.strftime('%Y-%m-%d 23:59:59')
 
-				if ultima_agenda_id:
-					hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
-					diff = int(hora_inicio_agenda[17:])
-					if diff > 0:
-						diff = 60 - diff
-					hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
-					if hora_inicio_agenda > fecha_hora_actual:
+			if fecha_inicio_agenda < fecha_hora_actual:
+				if consultorio_id:
+					f_ini = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_ini,context=context)
+					f_fin = self.pool.get('doctor.doctor').fecha_UTC(fecha_usuario_fin,context=context)
+					agenda_ids = self.search(cr,uid,[('date_begin','>=', f_ini), ('date_end', '<=', f_fin), ('consultorio_id', '=', consultorio_id)],context=None)
+					ultima_agenda_id = agenda_ids and max(agenda_ids)
 
-						res['value']['date_begin'] = str(hora_inicio_agenda)
-						res['value']['fecha_inicio'] = str(hora_inicio_agenda)
-					else:
+					if ultima_agenda_id:
+						hora_inicio_agenda = self.browse(cr,uid,ultima_agenda_id,context=context).date_end
+						diff = int(hora_inicio_agenda[17:])
+						if diff > 0:
+							diff = 60 - diff
+						hora_inicio_agenda = datetime.strptime(hora_inicio_agenda, "%Y-%m-%d %H:%M:%S") + timedelta(seconds = diff)
+						if hora_inicio_agenda > fecha_hora_actual:
+
+							res['value']['date_begin'] = str(hora_inicio_agenda)
+							res['value']['fecha_inicio'] = str(hora_inicio_agenda)
+						else:
+							res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
+							res['value']['fecha_inicio'] = str(fecha_hora_actual + timedelta(minutes=2))
+
+					elif not ultima_agenda_id or fecha_inicio_agenda < fecha_hora_actual:
 						res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
 						res['value']['fecha_inicio'] = str(fecha_hora_actual + timedelta(minutes=2))
-
-				elif not ultima_agenda_id or fecha_inicio_agenda < fecha_hora_actual:
-					res['value']['date_begin'] = str(fecha_hora_actual + timedelta(minutes=2))
-					res['value']['fecha_inicio'] = str(fecha_hora_actual + timedelta(minutes=2))
 					
 		return res
 
