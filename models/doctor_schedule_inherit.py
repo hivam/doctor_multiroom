@@ -43,9 +43,12 @@ class doctor_schedule_inherit(osv.osv):
 
 	def _check_medico_disponible(self, cr, uid, ids):
 		for record in self.browse(cr, uid, ids):
-			doctors_ids = self.search(cr, uid, [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin), '&', ('id', '<>', record.id), ('professional_id', '=', record.professional_id.id)])
-			if doctors_ids:
-				return False
+			if record.professional_id.multi_consultorio:
+				return True
+			else:
+				doctors_ids = self.search(cr, uid, [('date_begin', '<', record.date_end), ('date_end', '>', record.date_begin), '&', ('id', '<>', record.id), ('professional_id', '=', record.professional_id.id)])
+				if doctors_ids:
+					return False
 		return True
 
 	def onchange_hora_inicio(self, cr, uid, ids, consultorio_id, date_begin, context=None):
