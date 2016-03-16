@@ -65,12 +65,17 @@ class doctor_appointment(osv.osv):
 
 	def _chech_cita(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids, context=context):
-			appointment_ids = self.search(cr, uid,
+			modulo_instalado = self.pool.get('ir.module.module').search(cr,uid,[('name', '=', 'l10n_co_doctor'), ('state', '=', 'installed')],context=context)
+			if modulo_instalado:
+				if record.schedule_id.multi_paciente:
+					return True
+				else:
+					appointment_ids = self.search(cr, uid,
 										  [('time_begin', '<', record.time_end), ('time_end', '>', record.time_begin),
 										   ('aditional', '=', record.aditional), ('state', '=', record.state),
 										   ('id', '<>', record.id), ('consultorio_id', '=', record.consultorio_id.id)])
-			if appointment_ids:
-				return False
+					if appointment_ids:
+						return False
 		return True
 
 
