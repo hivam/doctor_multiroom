@@ -36,18 +36,29 @@ class doctor_appointment(osv.osv):
 		values = {}
 		if not schedule_id:
 			return values
+
 		schedule = self.pool.get('doctor.schedule').browse(cr, uid, schedule_id, context=context)
 		schedule_professional = schedule.professional_id.id
 		consultorio_id=schedule.consultorio_id.id
 		schedule_begin = datetime.strptime(schedule.date_begin, "%Y-%m-%d %H:%M:%S")
-		time_begin = schedule_begin.strftime("%Y-%m-%d %H:%M:%S")
 
-		values.update({
-			'time_begin': time_begin,
-			'professional_id': schedule_professional,
-			'consultorio_id' : consultorio_id,
+		if time_begin:
+			date_begin=time_begin
+			values.update({
+				'time_begin': date_begin,
+				'professional_id': schedule_professional,
+				'consultorio_id' : consultorio_id,
+			})
 
-		})
+		
+		if not time_begin:
+			time_begin = schedule_begin.strftime("%Y-%m-%d %H:%M:%S")
+			values.update({
+				'time_begin': time_begin,
+				'professional_id': schedule_professional,
+				'consultorio_id' : consultorio_id,
+
+			})
 		return {'value': values}
 
 	def create(self, cr, uid, vals, context=None):
