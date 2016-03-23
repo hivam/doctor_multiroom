@@ -33,6 +33,7 @@ class doctor_room(osv.osv):
 		'codigo':fields.char('Código', size=3, required=True),
 		'name':fields.char('Nombre Consultorio', required='True'),
 		'multi_paciente': fields.boolean('Multi Paciente'), 
+		'numero_pacientes':fields.integer('Numero de Pacientes',size=3)
 	}
 
 	_sql_constraints = [

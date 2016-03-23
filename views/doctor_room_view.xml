@@ -13,6 +13,7 @@
               <field name="codigo" style="width: 50%%" />
               <field name="name" style="width: 50%%"/>
               <field name="multi_paciente" style="width: 50%%"/>
+              <field name="numero_pacientes" style="width: 50%%" attrs="{'invisible': [('multi_paciente', '=', False)]}"/>
             </group>
           </sheet>
         </form>
@@ -27,6 +28,7 @@
           <field name="codigo" />
           <field name="name"/>
           <field name="multi_paciente"/>
+          <field name="numero_pacientes"/>
         </tree>
       </field>
     </record>
