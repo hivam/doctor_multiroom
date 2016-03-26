@@ -33,13 +33,24 @@ class doctor_room(osv.osv):
 		'codigo':fields.char('Código', size=3, required=True),
 		'name':fields.char('Nombre Consultorio', required='True'),
 		'multi_paciente': fields.boolean('Multi Paciente'), 
-		'numero_pacientes':fields.integer('Numero de Pacientes',size=3)
+		'numero_pacientes':fields.integer('Numero de Pacientes',size=2)
 	}
+
+
+	def validar_numero_pacientes(self, cr, uid, ids, context=None):
+		numero_pacientes= self.search(cr, uid, [], context=context)
+		for pacientes in self.browse(cr, uid, numero_pacientes):
+			total_pacientes=pacientes.numero_pacientes
+		if total_pacientes > 1:
+			return True
+		return False
 
 	_sql_constraints = [
 		('name_unico','unique(name)', 'Ya existe un consultorio con este mismo nombre.'),
 		('codigo_unico','unique(codigo)', u'Ya existe un consultorio con este mismo código.')
 	]
+
+	_constraints = [(validar_numero_pacientes, u'El número de pacientes tiene que ser mayor a 1', [u'Número de Pacientes'])]
 
 	#Guardando el nombre del consultorio en mayúscula.
 	def create(self, cr, uid, vals, context=None):
