@@ -76,8 +76,9 @@ class doctor_appointment(osv.osv):
 
 	def _chech_cita(self, cr, uid, ids, context=None):
 		for record in self.browse(cr, uid, ids, context=context):
-			if record.schedule_id.consultorio_id.multi_paciente:
-				return True
+			if record.schedule_id is None:
+				if record.schedule_id.consultorio_id.multi_paciente:
+					return True
 			else:
 				appointment_ids = self.search(cr, uid,
 										[('time_begin', '<', record.time_end), ('time_end', '>', record.time_begin),
