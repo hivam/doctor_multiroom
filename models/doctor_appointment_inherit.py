@@ -63,9 +63,7 @@ class doctor_appointment(osv.osv):
 
 	def create(self, cr, uid, vals, context=None):
 		modelo_buscar = self.pool.get('doctor.schedule')
-
 		consultorio_id = modelo_buscar.browse(cr, uid, vals['schedule_id'], context=context).consultorio_id.id
-		_logger.info(consultorio_id)
 		if consultorio_id:
 			vals.update({'consultorio_id': consultorio_id })
 		return super(doctor_appointment, self).create(cr, uid, vals, context)
@@ -75,20 +73,25 @@ class doctor_appointment(osv.osv):
 		return True
 
 	def _chech_cita(self, cr, uid, ids, context=None):
+		fecha_hora_actual = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:00")
+		fecha_hora_actual = datetime.strptime(fecha_hora_actual, "%Y-%m-%d %H:%M:00")
+		fecha_usuario_ini = fecha_hora_actual.strftime('%Y-%m-%d 00:00:00')
 		for record in self.browse(cr, uid, ids, context=context):
-			if record.schedule_id is None:
+			if record.schedule_id:
 				if record.schedule_id.consultorio_id.multi_paciente:
-					return True
+						return True
 			else:
-				appointment_ids = self.search(cr, uid,
-										[('time_begin', '<', record.time_end), ('time_end', '>', record.time_begin),
-										('aditional', '=', record.aditional), ('state', '=', record.state),
-										('id', '<>', record.id), ('consultorio_id', '=', record.consultorio_id.id)])
-				if appointment_ids:
-					return False
-
+				if record.time_begin < fecha_usuario_ini:
+					return True
+				else:
+					appointment_ids = self.search(cr, uid,
+												  [('time_begin', '<', record.time_end), ('time_end', '>', record.time_begin),
+												   ('aditional', '=', record.aditional), ('state', '=', record.state),
+												   ('id', '<>', record.id)])
+					if appointment_ids:
+						return False
+		
 		return True
-
 
 	_constraints = [
 		(_check_appointment, 'Error ! Already exists an appointment at that time.', ['time_begin', 'time_end']),
