@@ -43,21 +43,22 @@ class doctor_appointment(osv.osv):
 		schedule_begin = datetime.strptime(schedule.date_begin, "%Y-%m-%d %H:%M:%S")
 
 		if time_begin:
+			_logger.info('Si tiene fecha')
 			date_begin=time_begin
 			values.update({
 				'time_begin': date_begin,
 				'professional_id': schedule_professional,
 				'consultorio_id' : consultorio_id,
-			})
+ 			})
 
 		
 		if not time_begin:
+			_logger.info('No tiene fecha')
 			time_begin = schedule_begin.strftime("%Y-%m-%d %H:%M:%S")
 			values.update({
 				'time_begin': time_begin,
 				'professional_id': schedule_professional,
 				'consultorio_id' : consultorio_id,
-
 			})
 		return {'value': values}
 
