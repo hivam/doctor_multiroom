@@ -5,4 +5,8 @@ access_doctor_schedule_multiroom_doctor,doctor.doctor.room,model_doctor_room,doc
 access_doctor_schedule_multiroom_doctor_configuracion,doctor.doctor.room,model_doctor_room,doctor.group_doctor_physician_configuracion,1,1,1,0
 access_doctor_schedule_multiroom_asis_config,doctor.doctor.room,model_doctor_room,doctor.group_doctor_assistant_configuracion,1,1,1,0
 
+access_doctor_schedule_multiroom_odontologo,doctor.doctor.room,model_doctor_room,doctor.group_doctor_odontologo,1,0,0,0
+
+access_doctor_schedule_multiroom_psicologo,doctor.doctor.room,model_doctor_room,doctor.group_doctor_psicologo,1,0,0,0
+
 
