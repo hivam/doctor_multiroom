@@ -42,9 +42,11 @@ class doctor_appointment(osv.osv):
 		consultorio_id=schedule.consultorio_id.id
 		schedule_begin = datetime.strptime(schedule.date_begin, "%Y-%m-%d %H:%M:%S")
 
+		date_begin_calculate=self.pool.get('doctor.appointment').onchange_calcular_hora_inicio_con_agenda(cr, uid, ids, schedule_id, time_begin)
+		_logger.info(date_begin_calculate)
 		if time_begin:
 			_logger.info('Si tiene fecha')
-			date_begin=time_begin
+			date_begin=date_begin_calculate
 			values.update({
 				'time_begin': date_begin,
 				'professional_id': schedule_professional,
@@ -60,6 +62,8 @@ class doctor_appointment(osv.osv):
 				'professional_id': schedule_professional,
 				'consultorio_id' : consultorio_id,
 			})
+
+
 		return {'value': values}
 
 	def create(self, cr, uid, vals, context=None):
